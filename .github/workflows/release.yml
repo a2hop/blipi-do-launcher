@@ -7,6 +7,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,23 +32,16 @@ jobs:
         chmod +x build.sh
         ./build.sh
     
-    - name: Create release archive
-      run: |
-        mkdir -p blipi-do-release
-        cp build/blipi-do blipi-do-release/
-        cp actions.xml blipi-do-release/
-        cp README.md blipi-do-release/
-        tar -czf blipi-do-linux-x86_64.tar.gz blipi-do-release/
-    
     - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          build/blipi-do
+          actions.xml
+          README.md
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./blipi-do-linux-x86_64.tar.gz
-        asset_name: blipi-do-linux-x86_64.tar.gz
-        asset_content_type: application/gzip
     
     - name: Upload binary as artifact
       uses: actions/upload-artifact@v4
