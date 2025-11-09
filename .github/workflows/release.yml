@@ -1,0 +1,54 @@
+name: Build and Release
+
+on:
+  release:
+    types: [created]
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          libgtk-3-dev \
+          libxml2-dev \
+          pkg-config
+    
+    - name: Build application
+      run: |
+        chmod +x build.sh
+        ./build.sh
+    
+    - name: Create release archive
+      run: |
+        mkdir -p blipi-do-release
+        cp build/blipi-do blipi-do-release/
+        cp actions.xml blipi-do-release/
+        cp README.md blipi-do-release/
+        tar -czf blipi-do-linux-x86_64.tar.gz blipi-do-release/
+    
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./blipi-do-linux-x86_64.tar.gz
+        asset_name: blipi-do-linux-x86_64.tar.gz
+        asset_content_type: application/gzip
+    
+    - name: Upload binary as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: blipi-do-binary
+        path: build/blipi-do

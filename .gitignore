@@ -1,0 +1,28 @@
+# Build output
+build/
+
+# Compiled object files
+*.o
+*.so
+*.a
+
+# Executables
+blipi-do
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Compiled resources
+resources.c
+
+# Temporary files
+*.tmp
+*.bak

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Menu>
+    <Item label="Image">
+        <Item label="Webp -- PNG" action="/home/lxk/Desktop/.blipi/Image/webp2png/webp-convert.sh"></Item>
+        <Item label="Remove BG" action="removeBg">
+            <Item label="Remove BG - sandbox" action="removeBgSandbox"></Item>
+        </Item>
+    </Item>
+    <Item label="UI">
+        <Item label="Select Window Icon" action="/home/lxk/Desktop/blipi-do/build/xwindow-icon-set-gui" options="--icon-src=/etc/blipi-do/context-icons"></Item>
+    </Item>
+    <Item label="Launch">
+        <Item label="Multiple PPTX" action="launchMultiplePPTX"></Item>
+    </Item>
+</Menu>
